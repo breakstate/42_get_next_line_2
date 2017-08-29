@@ -1,0 +1,42 @@
+ft_atoi:		tested, trusted (until max int)
+ft_bzero:		tested, trusted (memset)
+
+ft_memset:		tested, trusted	
+ft_memalloc:	looked, trusted until
+ft_memccpy:		tested, trusted
+ft_memcpy:		tested, trusted
+ft_memchr:		unsure, test on checker
+ft_memcmp:		tested, trusted
+ft_memdel:		looked, trusted
+
+ft_putendl:		tested, trusted
+ft_putendl_fd:	tested, trusted
+ft_putnbr:		tested, trusted (removed hard code)
+ft_putstr:		tested, trusted
+ft_putstr_fd:	tested, trusted
+
+ft_isspace:		tested, trusted
+
+ft_strsub:		tested, trusted
+ft_strjoin:		tested, trusted
+ft_strdup:		tested, trusted
+ft_strsplit:	tested, trusted, no leaks (when freed in calling function)
+ft_strstr:		tested, trusted until
+ft_strtrim:		tested, trusted
+ft_strtrim_delim:	tested, trusted
+ft_strnstr:		tested, trusted until
+ft_strcat:		tested, trusted
+ft_strchr:		tested, trusted
+ft_strclr:		looked, trusted until
+ft_strcmp:		tested, trusted
+ft_strcpy:		tested, trusted
+ft_strequ:		tested, trusted
+ft_strnequ:		tested, trusted
+ft_strncmp:		tested, trusted
+ft_striter:		tested, trusted
+ft_striteri:	tested, trusted
+ft_strlcat:		nopenopenope
+ft_strmap:		tested, trusted
+ft_strmapi:		tested, trusted
+ft_strlen:		tested, trusted
+

@@ -6,7 +6,7 @@
 /*   By: bmoodley <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 12:56:24 by bmoodley          #+#    #+#             */
-/*   Updated: 2017/08/29 15:47:41 by bmoodley         ###   ########.fr       */
+/*   Updated: 2017/08/29 15:51:47 by bmoodley         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static int		buf_parse(char *buf, char **new, int *pos, int *r)
 {
 	int		i;
 
+	i = 0;
 	i += *pos;
 	while (buf[i] != '\n' && i < BUFF_SIZE && buf[i] != '\0')
 		i++;
@@ -91,3 +92,6 @@ int		main()
 	printf("gnl = %d\n", gnl);//remove
 	return (0);
 }
+
+//the buffer is being cleared each time gnl is being called from main.
+//read should only be performed if the buffer is empty ie pos = 0;

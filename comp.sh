@@ -1,1 +1,1 @@
-gcc get_next_line.c -L ./libft -lft
+gcc -Wall -Werror -Wextra -g get_next_line.c -L ./libft -lft

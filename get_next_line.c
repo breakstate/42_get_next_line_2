@@ -6,7 +6,7 @@
 /*   By: bmoodley <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 12:56:24 by bmoodley          #+#    #+#             */
-/*   Updated: 2017/09/01 14:29:07 by bmoodley         ###   ########.fr       */
+/*   Updated: 2017/09/01 17:02:34 by bmoodley         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,13 @@ static int		buf_parse(char *buf, char **new, int *pos)
 	return (0);
 	//return (*pos == -1 ? 0 : 1);//bypasses the return condition if need buffer reload.
 */
-
-	int		i;
-
+//------------------------------------------------------------------------------
+/*	int		i;
+*
 	i = 0;
 	i += *pos;
 	while (buf[i] != '\n' && i < BUFF_SIZE && buf[i] != '\0')
-	{
 		i++;
-		printf(" buf[%d] = %c\n", i, buf[i]);
-	}
 	new_malloc(buf, new, *pos, i);
 	if (buf[i] == '\n')// && i < BUFF_SIZE - 1)
 		*pos = i + 1;
@@ -107,6 +104,33 @@ static int		buf_parse(char *buf, char **new, int *pos)
 		puts("qwerty");
 		return (1);
 	}
+	return (0);*/
+//--------------------------------------------------------------------------------
+	int		i;
+
+	i = 0;
+	i += *pos;
+	printf("%s :::: buf\n\n", buf);	
+	while (i < BUFF_SIZE)
+	{
+		//if (buf[i] != '\n' && buf[i] != '\0')
+		//	i++;
+		if (buf[i] == '\n')
+		{
+			new_malloc(buf, new, *pos, i);
+			*pos =  i + 1;;
+			return (1);
+		}
+		else if (buf[i] == '\0')
+		{
+			new_malloc(buf, new, *pos, i);
+			*pos = -1;
+			return (1);
+		}
+		i++;
+	}
+	ft_bzero(buf, BUFF_SIZE);
+	*pos = -1;
 	return (0);
 }
 
@@ -130,11 +154,14 @@ int		get_next_line(const int fd, char **line)
 		else if (r == 0 || r == -1)
 			return (r);
 		else
+		{
+		//	printf("poes ::: %i \n\n", pos);
 			if (buf_parse(buf, &new, &pos))//buf_parse(buf, &new, &pos, &r))
 			{
 				*line = new;
 				return (1);
 			}
+		}
 	}
 	//return (r == 0 ? 0 : 1);
 }

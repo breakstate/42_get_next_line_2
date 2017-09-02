@@ -6,39 +6,39 @@
 /*   By: bmoodley <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 12:56:24 by bmoodley          #+#    #+#             */
-/*   Updated: 2017/09/01 17:02:34 by bmoodley         ###   ########.fr       */
+/*   Updated: 2017/09/02 16:16:21 by bmoodley         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft/includes/libft.h"
 #include <stdio.h>
+#define debugf //printf
 
 static	void	new_malloc(char *buf, char **new, int pos, int i)
 {
 	char	*temp;
 	char	*temp2;
 
-	//printf("NEW_MALLOC:\n pos = %d\n", pos);//remove
+	printf(" ---NEW_MALLOC:\n ---buf = [[%s]]\n ---new = [[%s]]\n ---pos = %d\n ---i = %d\n", buf, *new, pos, i);//remove
 	if (*new == NULL)
 	{
 		*new = ft_strsub(buf, pos, i);
-		//printf("\nif new = |%s|\n\n", *new);//remove
+		printf("\n --->>if new = |%s|\n\n", *new);//remove
 	}
 	else
 	{
 		temp2 = ft_strsub(buf, pos, i);
 		temp = ft_strdup(*new);
+		printf( " ---else:\n ---temp = %s\n ---temp2 = %s\n", temp, temp2);
 		free(*new);
 		*new = ft_strjoin(temp, temp2);
 		free(temp);
 		free(temp2);
-		//printf("\nelse new = |%s|\n\n", *new);//remove
+		printf("\n --->>else new = |%s|\n\n", *new);//remove
 	}
 }
 
-static int		buf_parse(char *buf, char **new, int *pos)
-{
 	/*
 	int		i;
 	
@@ -106,6 +106,8 @@ static int		buf_parse(char *buf, char **new, int *pos)
 	}
 	return (0);*/
 //--------------------------------------------------------------------------------
+
+/*
 	int		i;
 
 	i = 0;
@@ -133,29 +135,68 @@ static int		buf_parse(char *buf, char **new, int *pos)
 	*pos = -1;
 	return (0);
 }
+*/
+//-----------------------------------------------------------------------------
+
+//i
+//while buf
+//	if \n
+//		append and parse again.
+//		pos = i (point after '\n'
+//	else 
+//		reload and parse. 
+//		pos = -1
+//reload
+
+static int		buf_parse(char *buf, char **new, int *pos)
+{
+	int		i;
+
+	printf(" -BUF_PARSE:\n");
+	i = 0;
+	i += *pos;
+	while (buf[i])
+	{
+		printf(" -buf[%d] = %c\n", i, buf[i]);//remove
+		if (buf[i] == '\n')
+		{
+			new_malloc(buf, new, *pos, i - *pos);
+			*pos = i + 1;
+			printf(" -pos = %d\n", *pos);//remove
+			return (1);
+		}
+		i++;
+	}
+	printf("\n -i = %d\n -pos = %d\n", i, *pos);//remove
+	new_malloc(buf, new, *pos, i);
+	*pos = -1;
+	//return (0);
+	return (i == BUFF_SIZE ? 0 : 1);
+}
 
 int		get_next_line(const int fd, char **line)
 {
 	static int		r;
-	static char		buf[BUFF_SIZE];
+	static char		buf[BUFF_SIZE + 1];
 	static int		pos = -1;
 	char			*new;
 
+	printf("GNL:\n");
 	new = NULL;
 	while (1)
 	{
-		//printf("   ||r = %d||\n", r);
 		if (pos == -1)
 		{
-			ft_bzero(buf, BUFF_SIZE);
+			printf(" RELOAD BUFFER\n");
+			ft_bzero(buf, BUFF_SIZE + 1);
 			r = read(fd, buf, BUFF_SIZE);
+			printf(" r = %d\n", r);
 			pos = 0;
 		}
-		else if (r == 0 || r == -1)
+		if (r == 0 || r == -1)
 			return (r);
 		else
 		{
-		//	printf("poes ::: %i \n\n", pos);
 			if (buf_parse(buf, &new, &pos))//buf_parse(buf, &new, &pos, &r))
 			{
 				*line = new;
@@ -175,19 +216,20 @@ int		main()
 
 	printf("-----------------GET NEXT LINE-----------------\n");
 	line = NULL;
-	fd = open("test6.txt", O_RDONLY);
+	fd = open("test5.txt", O_RDONLY);
 	while ((gnl = get_next_line(fd, &line)) == 1 && debug)
 	{
-		//printf("\n--------------start-------------\n");
-		printf("line -> %s\n", line);
+		printf("\n--------------start-------------\n");
+		printf("line -> |%s|\n", line);
 		free(line);
 		printf("gnl = %d\n", gnl);//remove
-		//printf("---------------end--------------\n\n");
+		printf("---------------end--------------\n\n");
 		debug--;//DEBUG
 	}
 	printf("gnl = %d\n", gnl);//remove
 	return (0);
 }
 
-//the buffer is being cleared each time gnl is being called from main.
-//read should only be performed if the buffer is empty ie pos = 0;
+//weird errors right now, skips letters sometimes and prints \n for last line.
+//changed buffer to BUFF_SIZE + 1 for null terminator.
+//testing now with revised buf_parse.

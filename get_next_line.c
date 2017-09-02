@@ -6,7 +6,7 @@
 /*   By: bmoodley <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 12:56:24 by bmoodley          #+#    #+#             */
-/*   Updated: 2017/09/02 16:16:21 by bmoodley         ###   ########.fr       */
+/*   Updated: 2017/09/02 16:53:25 by bmoodley         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,14 +162,16 @@ static int		buf_parse(char *buf, char **new, int *pos)
 		{
 			new_malloc(buf, new, *pos, i - *pos);
 			*pos = i + 1;
-			printf(" -pos = %d\n", *pos);//remove
-			return (1);
+			printf("\n >i = %d\n >pos = %d\n", i, *pos);//remove
+			return (1);//I DONT TRUST THIS PART
 		}
 		i++;
 	}
-	printf("\n -i = %d\n -pos = %d\n", i, *pos);//remove
+	printf("AFTER WHILE\n");
 	new_malloc(buf, new, *pos, i);
+	printf("\n -i = %d\n -pos = %d\n", i, *pos);//remove
 	*pos = -1;
+	printf("\n -i = %d\n -pos = %d\n", i, *pos);//remove
 	//return (0);
 	return (i == BUFF_SIZE ? 0 : 1);
 }

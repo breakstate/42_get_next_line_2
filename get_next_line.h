@@ -6,14 +6,14 @@
 /*   By: bmoodley <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 12:47:58 by bmoodley          #+#    #+#             */
-/*   Updated: 2017/07/22 12:56:11 by bmoodley         ###   ########.fr       */
+/*   Updated: 2017/09/04 14:11:08 by bmoodley         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _GET_NEXT_LINE_H_
 # define _GET_NEXT_LINE_H_
 
-# define BUFF_SIZE 10
+# define BUFF_SIZE 1000
 
 # include <unistd.h>
 # include <fcntl.h>

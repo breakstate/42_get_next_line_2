@@ -56,7 +56,8 @@ static int		buf_parse(char *buf, char **new, int *pos, char **line)
 	return (0);
 }
 
-int				get_next_line(const int fd, char **line)
+
+/*int				get_next_line(const int fd, char **line)
 {
 	static int	r = -2;
 	static char	buf[BUFF_SIZE + 1];
@@ -83,6 +84,60 @@ int				get_next_line(const int fd, char **line)
 			return (1);
 	}
 }
+*/
+
+static void	build(char **line, char **new, char *pos)
+{
+	*line = ft_strsub(*new, 0, ft_strlen(*new) - ft_strlen(*new));
+	*new = ft_strdup(pos + 1);
+}
+
+static int	ft_append(int fd, char **new)
+{
+	char	*buf;
+	int		ret;
+
+	buf = (char *)malloc(sizeof(char) * (BUFF_SIZE + 1))
+	if (buf == NULL)
+		return (-1);
+	ret = read(fd, buf, BUFF_SIZE);
+	if (ret > 0)
+	{
+		buff[ret] = '\0';
+		*new = ft_strjoin_f(*new, buff);
+	}
+	free(buff);
+	return (ret);
+}
+
+int		get_next_line(const int fd, char **line)
+{
+	static char *new;
+	char		*pos;
+	int			ret;
+
+	if (new != NULL)
+		new = ft_strnew(0);
+	pos = ft_strchr(new, '\n');
+	while (!pos)
+	{
+		ret = ft_append(fd, &new);
+		if (ret == 0)
+		{
+			if (ft_strlen(bin) == 0)
+				return (0);
+			new = ft_strjoin(new, "\n");//ft_strjoin_f
+		}
+		if (ret < 0)
+			return (-1);
+		else
+			pos = ft_strchr(new, '\n');
+	}
+	build(line, &new, pos);
+	return (1);
+}
+
+
 /*
 int		main()
 {
